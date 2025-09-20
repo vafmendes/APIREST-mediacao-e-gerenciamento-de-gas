@@ -1,0 +1,110 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum PessoaTipo {
+  DONO
+  INQUILINO
+  MORADOR
+}
+
+enum Periodicidade {
+  SEMANAL
+  MENSAL
+  BIMESTRAL
+  SEMESTRAL
+  ANUAL
+}
+
+model Condominio {
+  id        Int     @id @default(autoincrement())
+  nome      String
+  cep       String?
+  logradouro String?
+  numero    String?
+  bairro    String?
+  estado    String?
+  uf        String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  torres    Torre[]
+}
+
+model Torre {
+  id           Int         @id @default(autoincrement())
+  identificacao String
+  condominioId Int
+  condominio   Condominio  @relation(fields: [condominioId], references: [id], onDelete: Cascade)
+  apartamentos Apartamento[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([condominioId])
+}
+
+model Apartamento {
+  id        Int       @id @default(autoincrement())
+  numero    String
+  torreId   Int
+  torre     Torre     @relation(fields: [torreId], references: [id], onDelete: Cascade)
+  pessoas   Pessoa[]
+  hidrometro Hidrometro?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([torreId])
+  @@unique([numero, torreId], name: "unique_apto_in_torre")
+}
+
+model Pessoa {
+  id          Int        @id @default(autoincrement())
+  nome        String
+  endereco    String?
+  email       String?    @unique
+  telefone    String?
+  tipo        PessoaTipo
+  apartamentoId Int?
+  apartamento  Apartamento? @relation(fields: [apartamentoId], references: [id], onDelete: SetNull)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([apartamentoId])
+}
+
+model Hidrometro {
+  id            Int        @id @default(autoincrement())
+  codigo        String     @unique
+  apartamentoId Int        @unique
+  apartamento   Apartamento @relation(fields: [apartamentoId], references: [id], onDelete: Cascade)
+  leituras      Leitura[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Leitura {
+  id           Int         @id @default(autoincrement())
+  hidrometroId Int
+  hidrometro   Hidrometro  @relation(fields: [hidrometroId], references: [id], onDelete: Cascade)
+  dataLeitura  DateTime
+  valorM3      Decimal @db.Decimal(18,6)
+  periodicidade Periodicidade
+  observacao   String?
+  createdAt    DateTime @default(now())
+
+  @@index([hidrometroId, dataLeitura])
+}
+

@@ -1,0 +1,20 @@
+
+services:
+  my-postgres:
+    image: postgres:13
+    container_name: my-postgres
+    ports:
+      - ${POSTGRES_PORT-5432}:5432
+    env_file:
+      - .env
+
+  pgadmin:
+      image: dpage/pgadmin4
+      container_name: my-pgadmin
+      env_file:
+        - .env
+      ports:
+        - "8081:80"
+      environment:
+        PGADMIN_DEFAULT_EMAIL: devtest@gmail.com
+        PGADMIN_DEFAULT_PASSWORD: admin 
