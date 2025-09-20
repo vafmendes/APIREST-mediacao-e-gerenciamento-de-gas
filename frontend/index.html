@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gerenciamento de Gás - Frontend</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2rem; }
+    h1 { color: #2c3e50; }
+    form { margin-bottom: 2rem; padding: 1rem; border: 1px solid #ccc; border-radius: 8px; }
+    label { display: block; margin-top: 1rem; }
+    input, select { width: 100%; padding: 0.5rem; margin-top: 0.2rem; }
+    button { margin-top: 1rem; padding: 0.5rem 1rem; }
+    .result { margin-top: 1rem; color: green; }
+    .error { color: red; }
+  </style>
+</head>
+<body>
+  <h1>Consultar Condomínio</h1>
+  <form id="consultaCondominioForm">
+    <label>ID do Condomínio: <input type="number" name="condominioId" required></label>
+    <button type="submit">Buscar</button>
+    <div class="result" id="consultaCondominioResult"></div>
+  </form>
+
+  <h1>Consultar Torre</h1>
+  <form id="consultaTorreForm">
+    <label>ID da Torre: <input type="number" name="torreId" required></label>
+    <button type="submit">Buscar</button>
+    <div class="result" id="consultaTorreResult"></div>
+  </form>
+
+  <h1>Consultar Apartamento</h1>
+  <form id="consultaApartamentoForm">
+    <label>ID do Apartamento: <input type="number" name="apartamentoId" required></label>
+    <button type="submit">Buscar</button>
+    <div class="result" id="consultaApartamentoResult"></div>
+  </form>
+
+  <h1>Consultar Pessoa</h1>
+  <form id="consultaPessoaForm">
+    <label>ID do Apartamento: <input type="number" name="apartamentoId" required></label>
+    <button type="submit">Buscar</button>
+    <div class="result" id="consultaPessoaResult"></div>
+  </form>
+
+  <h1>Consultar Hidrômetro</h1>
+  <form id="consultaHidrometroForm">
+    <label>ID do Apartamento: <input type="number" name="apartamentoId" required></label>
+    <button type="submit">Buscar</button>
+    <div class="result" id="consultaHidrometroResult"></div>
+  </form>
+
+  <h1>Consultar Leituras</h1>
+  <form id="consultaLeituraForm">
+    <label>ID do Apartamento: <input type="number" name="apartamentoId"></label>
+    <label>ID da Torre: <input type="number" name="torreId"></label>
+    <label>ID do Condomínio: <input type="number" name="condominioId"></label>
+    <label>Data Inicial: <input type="date" name="from"></label>
+    <label>Data Final: <input type="date" name="to"></label>
+    <button type="submit">Buscar</button>
+    <div class="result" id="consultaLeituraResult"></div>
+  </form>
+
+  <h1>Cadastro de Condomínio</h1>
+  <form id="condominioForm">
+    <label>Nome: <input type="text" name="nome" required></label>
+    <label>CEP: <input type="text" name="cep"></label>
+    <label>Logradouro: <input type="text" name="logradouro"></label>
+    <label>Número: <input type="text" name="numero"></label>
+    <label>Bairro: <input type="text" name="bairro"></label>
+    <label>Estado: <input type="text" name="estado"></label>
+    <label>UF: <input type="text" name="uf"></label>
+    <button type="submit">Cadastrar</button>
+    <div class="result" id="condominioResult"></div>
+  </form>
+
+  <h1>Cadastro de Torre</h1>
+  <form id="torreForm">
+    <label>ID do Condomínio: <input type="number" name="condominioId" required></label>
+    <label>Identificação: <input type="text" name="identificacao" required></label>
+    <button type="submit">Cadastrar</button>
+    <div class="result" id="torreResult"></div>
+  </form>
+
+  <h1>Cadastro de Apartamento</h1>
+  <form id="apartamentoForm">
+    <label>ID da Torre: <input type="number" name="torreId" required></label>
+    <label>Número: <input type="text" name="numero" required></label>
+    <button type="submit">Cadastrar</button>
+    <div class="result" id="apartamentoResult"></div>
+  </form>
+
+  <h1>Cadastro de Pessoa</h1>
+  <form id="pessoaForm">
+    <label>ID do Apartamento: <input type="number" name="apartamentoId" required></label>
+    <label>Nome: <input type="text" name="nome" required></label>
+    <label>Email: <input type="email" name="email"></label>
+    <label>Telefone: <input type="text" name="telefone"></label>
+    <label>Tipo:
+      <select name="tipo" required>
+        <option value="DONO">Dono</option>
+        <option value="INQUILINO">Inquilino</option>
+        <option value="MORADOR">Morador</option>
+      </select>
+    </label>
+    <button type="submit">Cadastrar</button>
+    <div class="result" id="pessoaResult"></div>
+  </form>
+
+  <h1>Cadastro de Hidrômetro</h1>
+  <form id="hidrometroForm">
+    <label>ID do Apartamento: <input type="number" name="apartamentoId" required></label>
+    <label>Código: <input type="text" name="codigo" required></label>
+    <button type="submit">Cadastrar</button>
+    <div class="result" id="hidrometroResult"></div>
+  </form>
+
+  <h1>Registrar Leitura</h1>
+  <form id="leituraForm">
+    <label>ID do Hidrômetro: <input type="number" name="hidrometroId" required></label>
+    <label>Data da Leitura: <input type="date" name="dataLeitura" required></label>
+    <label>Valor m³: <input type="number" step="0.01" name="valorM3" required></label>
+    <label>Periodicidade:
+      <select name="periodicidade" required>
+        <option value="MENSAL">Mensal</option>
+        <option value="SEMANAL">Semanal</option>
+        <option value="BIMESTRAL">Bimestral</option>
+        <option value="SEMESTRAL">Semestral</option>
+        <option value="ANUAL">Anual</option>
+      </select>
+    </label>
+    <button type="submit">Registrar</button>
+    <div class="result" id="leituraResult"></div>
+  </form>
+
+  <script src="main.js"></script>
+</body>
+</html>
